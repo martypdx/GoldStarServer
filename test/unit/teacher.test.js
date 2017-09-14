@@ -22,4 +22,18 @@ describe('Teacher model unit test', () => {
                 assert.ok(errors.hash);
             });
     });
+
+    it('New teacher generates hash', () => {
+        const teacher = new Teacher({
+            email: 'blah@blah.com'
+        });
+
+        const password = 'abc';
+        teacher.generateHash(password);
+
+        assert.notEqual(teacher.hash, password);
+        assert.isOk(teacher.comparePassword('abc'));
+        assert.isNotOk(teacher.comparePassword('babylawyer'));
+    });
 });
+
