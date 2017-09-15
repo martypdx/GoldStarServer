@@ -25,51 +25,51 @@ describe('auth', () => {
                 }
                 );
         it('signup requires email', () => 
-            badRequest('/api/auth/signup', { password: 'abc' }, 400, 'name, email, and password must be supplied')
+            badRequest('/api/authStudent/signup', { password: 'abc' }, 400, 'name, email, and password must be supplied')
         );
         it('signup requires password', () => 
-            badRequest('/api/auth/signup', { email: 'abc@123.com' }, 400, 'name, email, and password must be supplied')
+            badRequest('/api/authStudent/signup', { email: 'abc@123.com' }, 400, 'name, email, and password must be supplied')
         );
 
         let token = '';
 
         it('signup', () => 
             request
-                .post('/api/auth/signup')
+                .post('/api/authStudent/signup')
                 .send(user)
                 .then(res => assert.ok(token = res.body.token))
         );
 
         it('cannot use save email', () =>
-            badRequest('/api/auth/signup', user, 400, 'email in use')
+            badRequest('/api/authStudent/signup', user, 400, 'email in use')
         );
 
         it('signin requires email', () => 
-            badRequest('/api/auth/signin', { password: 'abc' }, 400, 'name, email, and password must be supplied')
+            badRequest('/api/authStudent/signin', { password: 'abc' }, 400, 'name, email, and password must be supplied')
         );
 
         it('signin requires password', () => 
-            badRequest('/api/auth/signin', { email: 'abc@123.net' }, 400, 'name, email, and password must be supplied')
+            badRequest('/api/authStudent/signin', { email: 'abc@123.net' }, 400, 'name, email, and password must be supplied')
         );
 
         it('signin with wrong user', () =>
-            badRequest('/api/auth/signin', { email: 'baddd User', password: user.password }, 401, 'invalid login')
+            badRequest('/api/authStudent/signin', { email: 'baddd User', password: user.password }, 401, 'invalid login')
         );
 
         it('signin with wrong password', () => 
-            badRequest('/api/auth/signin', { email: user.email, password: 'bad' }, 401, 'invalid login')
+            badRequest('/api/authStudent/signin', { email: user.email, password: 'bad' }, 401, 'invalid login')
         );
 
         it('signin', () => 
             request
-                .post('/api/auth/signin')
+                .post('/api/authStudent/signin')
                 .send(user)
                 .then(res => assert.ok(res.body.token))
         );
 
         it('token is invalid', () =>
             request
-                .get('/api/auth/verify')
+                .get('/api/authStudent/verify')
                 .send('Authorization', 'bad token')
                 .then(
                     () => { throw new Error('success response not expected'); },
@@ -79,7 +79,7 @@ describe('auth', () => {
 
         it('token is valid', () => 
             request
-                .get('/api/auth/verify')
+                .get('/api/authStudent/verify')
                 .set('Authorization', token)
                 .then(res => assert.ok(res.body))
         );
