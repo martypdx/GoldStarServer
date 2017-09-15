@@ -25,10 +25,10 @@ describe('auth', () => {
                 }
                 );
         it('signup requires email', () => 
-            badRequest('/api/auth/signup', { password: 'abc' }, 400, 'email and password must be supplied')
+            badRequest('/api/auth/signup', { password: 'abc' }, 400, 'name, email, and password must be supplied')
         );
         it('signup requires password', () => 
-            badRequest('/api/auth/signup', { email: 'abc@123.com' }, 400, 'email and password must be supplied')
+            badRequest('/api/auth/signup', { email: 'abc@123.com' }, 400, 'name, email, and password must be supplied')
         );
 
         let token = '';
@@ -45,11 +45,11 @@ describe('auth', () => {
         );
 
         it('signin requires email', () => 
-            badRequest('/api/auth/signin', { password: 'abc' }, 400, 'email and password must be supplied')
+            badRequest('/api/auth/signin', { password: 'abc' }, 400, 'name, email, and password must be supplied')
         );
 
         it('signin requires password', () => 
-            badRequest('/api/auth/signin', { email: 'abc@123.net' }, 400, 'email and password must be supplied')
+            badRequest('/api/auth/signin', { email: 'abc@123.net' }, 400, 'name, email, and password must be supplied')
         );
 
         it('signin with wrong user', () =>
@@ -77,5 +77,13 @@ describe('auth', () => {
                 )
         );
 
+        it('token is valid', () => 
+            request
+                .get('/api/auth/verify')
+                .set('Authorization', token)
+                .then(res => assert.ok(res.body))
+        );
+
     });
+
 });

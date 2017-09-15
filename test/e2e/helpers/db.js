@@ -1,5 +1,8 @@
-const { connection } = require('mongoose');
+const connection = require('mongoose').connection;
 const request = require('./request');
+process.env.MONGODB_URI = 'mongodb://localhost/goldstar-test';
+require('../../../lib/setup-mongoose');
+
 
 module.exports = {
     drop() {
