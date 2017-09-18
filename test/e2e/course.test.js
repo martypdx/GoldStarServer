@@ -5,29 +5,35 @@ const { assert } = require('chai');
 describe('courses', () => {
     before(db.drop);
 
+    let token = null;
+    before(() => db.getToken().then(t => token = t));
+
     let teacher = null;
 
     before(() => {
         return request.post('/api/authTeacher/signup')
-            
+            .set('Authorization', token)
             .send({
                 name: 'Joe Teacher',
                 email: 'Joe@aol.com',
                 password: '123'
             })
             .then(res => res.body)
-            .then(savedTeacher => teacher = savedTeacher);
+            .then(savedTeacher => {
+                teacher = savedTeacher;
+            });
     });
 
-    const course = {
+    let course = {
         title: 'Test Course',
         date: 'September 2017'
     };
 
     function saveCourse(course) {
-        course.teacher = teacher._id;
+        course.teacher = teacher.id;
         return request
             .post('/api/courses')
+            .set('Authorization', token)
             .send(course)
             .then(res => res.body);
     }
@@ -39,7 +45,9 @@ describe('courses', () => {
                 course = saved;
             })
             .then(() => {
-                return request.get(`/api/courses/${course._id}`);
+                return request
+                    .get(`/api/courses/${course._id}`)
+                    .set('Authorization', token);
             })
             .then(res => res.body)
             .then(got => {
