@@ -65,4 +65,11 @@ describe('flashcard sets API', () => {
             });
     });
 
+    it('deletes a set', () => {
+        return request.delete(`/api/flashcardSet/${set._id}`)
+            .set('Authorization', token)
+            .then(res => res.body)
+            .then(result => {assert.isTrue(result.removed);});
+    });
+
 });
