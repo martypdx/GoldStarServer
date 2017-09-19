@@ -26,7 +26,7 @@ describe('flashcard sets API', () => {
 
     let set = {
         name: 'test set'
-    }
+    };
 
     function saveSet(set) {
         set.author = teacher.id;
@@ -51,6 +51,17 @@ describe('flashcard sets API', () => {
             .then(res => res.body)
             .then(got => {
                 assert.deepEqual(got, set);
+            });
+    });
+
+    it('updates a set', () => {
+        set.name = 'New Set';
+        return request.put(`/api/flashcardSet/${set._id}`)
+            .set('Authorization', token)
+            .send(set)
+            .then(res => res.body)
+            .then(updated => {
+                assert.equal(updated.name, set.name);
             });
     });
 
