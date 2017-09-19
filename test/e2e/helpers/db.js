@@ -8,8 +8,8 @@ module.exports = {
     drop() {
         return connection.dropDatabase();
     },
-    getToken(user = { email: 'me@me.com', password: 'abc' }) {
-        return request.post('/api/auth/signup')
+    getToken(user = { name: 'me', email: 'me@me.com', password: 'abc' }, status = 'Teacher') {
+        return request.post(`/api/auth${status}/signup`)
             .send(user)
             .then(res => res.body.token);
     }
