@@ -55,17 +55,6 @@ describe('courses', () => {
             });
     });
 
-    it('updates course info', () => {
-        course.date = 'October 2090';
-        return request.put(`/api/courses/${course._id}`)
-            .set('Authorization', token)
-            .send(course)
-            .then(res => res.body)
-            .then(updated => {
-                assert.equal(updated.date, course.date);
-            });
-    });
-
     it('deletes a course', () => {
         return request.delete(`/api/courses/${course._id}`)
             .set('Authorization', token)
